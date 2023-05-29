@@ -3,10 +3,13 @@ import cv2
 import cvzone
 import math
 import PokerHandFunction
+import numpy
 
-cap = cv2.VideoCapture(1)  # For Webcam
-cap.set(3, 1280)
-cap.set(4, 720)
+
+cap = cv2.VideoCapture("strandtwo.mp4")
+#cap = cv2.VideoCapture(1)  # For Webcam
+#cap.set(3, 1280)
+#cap.set(4, 720)
 
 model = YOLO("playingCards.pt")
 classNames = ['10C', '10D', '10H', '10S',
