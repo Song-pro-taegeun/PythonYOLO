@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+
+<head>
+    <title>분석결과</title>
+</head>
+<body>
+    <div class="center">
+        <table>
+            <tr>
+                <th>
+                    보유한 카드의 족보
+                </th>
+                <th>
+                    확률정보
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <img src="data:image/jpeg;base64,{{ image_data }}" alt="Result Image">
+                </td>
+                <td>
+                    <div id="chartContainer">
+                        <canvas id="chart"></canvas>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // x1과 y1 변수를 Flask에서 전달받음
+  var x1 = JSON.parse('{{ x1|tojson }}');
+  var y1 = JSON.parse('{{ y1|tojson }}');
+
+  console.log("로그" + x1);
+  console.log("로그@@" + y1);
+
+    // DOM이 로드된 후에 실행되도록 이벤트 리스너를 추가합니다.
+    document.addEventListener('DOMContentLoaded', function() {
+        // Chart.js를 사용하여 막대 그래프 생성
+        var ctx = document.getElementById('chart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: x1,  // x 축 데이터
+                datasets: [{
+                    label: '그래프 확률',
+                    data: y1,  // y 축 데이터
+                    // backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],  // 막대 색상
+                    backgroundColor: ['red', 'black', 'blue', 'green'],  // 막대 색상
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,  // Y축 최대값 설정
+                        // ticks: {
+                        //     stepSize: 10  // Y축 보조 눈금 간격 설정
+                        // }
+                    }
+                }
+            }
+        });
+    });
+</script>
+</html>
