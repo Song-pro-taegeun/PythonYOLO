@@ -12,7 +12,7 @@ from flask import send_file
 app = Flask(__name__)
 
 # 턴제 증가를 위한 변수, start_analysis 함수에서 사용
-count = 1
+count = 0
 
 # app.route('/') 시 index.html로 이동
 # root <- index.html임
