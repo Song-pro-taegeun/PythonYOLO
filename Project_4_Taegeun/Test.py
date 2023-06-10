@@ -6,7 +6,6 @@ import cv2
 import cvzone
 import math
 import PokerHandFunction
-import APokerHandFunction
 import numpy
 import os
 import time
@@ -27,10 +26,7 @@ def main():
 def start_analysis():
     global count 
     file_path = "./Project_4_Taegeun/static/images/p"+str(count)+".jpg"
-    model_path= "./Project_4_Taegeun/static/images/large_14000_0951.pt"
     count += 1
-    print("FilePath" + file_path)
-    print("model_path@@@@" + model_path)
     
     # 파일이 있는지 없는지 체크
     if os.path.exists(file_path):
@@ -38,62 +34,58 @@ def start_analysis():
     else:
         print("File does not exist.")
 
-    # 파일이 있는지 없는지 체크
-    if os.path.exists(model_path):
-        print("@@@@ exists.")
-    else:
-        print("@@@@ does not exist.")
+    img = cv2.imread(file_path)
+    model = YOLO("./Project_4_Taegeun/static/images/playingCards.pt")
+    classNames = ['10C', '10D', '10H', '10S',
+                  '2C', '2D', '2H', '2S',
+                  '3C', '3D', '3H', '3S',
+                  '4C', '4D', '4H', '4S',
+                  '5C', '5D', '5H', '5S',
+                  '6C', '6D', '6H', '6S',
+                  '7C', '7D', '7H', '7S',
+                  '8C', '8D', '8H', '8S',
+                  '9C', '9D', '9H', '9S',
+                  'AC', 'AD', 'AH', 'AS',
+                  'JC', 'JD', 'JH', 'JS',
+                  'KC', 'KD', 'KH', 'KS',
+                  'QC', 'QD', 'QH', 'QS']
 
-    model = YOLO(model_path)
-
-    #54
-    classNames=  ['10c', '10d', '10h', '10s', '2c', '2d', '2h', '2s', '3c', '3d', '3h', '3s', '4c', '4d', '4h', '4s', '5c', '5d', '5h', '5s', '6c', '6d', '6h', '6s', '7c', '7d', '7h', '7s', '8c', '8d', '8h', '8s', '9c', '9d', '9h', '9s', 'Ac', 'Ad', 'Ah', 'As', 'Jc', 'Jd', 'Jh', 'Js', 'Kc', 'Kd', 'Kh', 'Ks', 'Qc', 'Qd', 'Qh', 'Qs']
-    source = cv2.imread("./Project_4_Taegeun/static/images/p5.jpg", cv2.IMREAD_COLOR)
-    source = cv2.resize(source, (0, 0), fx=0.15, fy=0.15, interpolation=cv2.INTER_AREA)
-    h, w, c = source.shape
-
-    halfh=int(h/2)
-    dummy=model(source,show=False)
-    yourcard = source[0:halfh,:]#슬라이싱
-    mycard = source[halfh:,:]#슬라이싱
-    temp=[]
-
-    yourcards = model(yourcard,show=True)
-    cv2.waitKey(0)
-    for yourcard in yourcards:
-        boxes=yourcard.boxes.cpu().numpy()
+    results = model(img, stream=True)
+    hand = []
+    for r in results:
+        boxes = r.boxes
         for box in boxes:
-            r=box.xyxy[0].astype(int)
-            #print(r)
-            temp.append(yourcard.names[int(box.cls[0])])
+            # Bounding Box
+            x1, y1, x2, y2 = box.xyxy[0]
+            x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+            # cv2.rectangle(img,(x1,y1),(x2,y2),(255,0,255),3)
+            w, h = x2 - x1, y2 - y1
+            cvzone.cornerRect(img, (x1, y1, w, h))
+            # Confidence
+            conf = math.ceil((box.conf[0] * 100)) / 100
+            # Class Name
+            cls = int(box.cls[0])
 
-    yourcards=list(set(temp))
-    temp=[]
-    mycards = model(mycard,show=True)
-    cv2.waitKey(0)
-    for mycard in mycards:
-        boxes=mycard.boxes.cpu().numpy()
-        for box in boxes:
-            r=box.xyxy[0].astype(int)
-            #print(r)
-            temp.append(mycard.names[int(box.cls[0])])
-    mycards=list(set(temp))
-    temp=[]
+            cvzone.putTextRect(img, f'{classNames[cls]} {conf}', (max(0, x1), max(35, y1)), scale=1, thickness=1)
 
+            if conf > 0.5:
+                hand.append(classNames[cls])
 
-    yourcards=APokerHandFunction.listitem_touppercase(yourcards)
-    mycards=APokerHandFunction.listitem_touppercase(mycards)
-    print(f"opponent card list - {yourcards} ")
-    print(f"my card list - {mycards} ")
+    print("hand 1: ")
+    print(hand)
+    hand = list(set(hand))
+    print("hand 2: ")
+    print(hand)
+    if len(hand) == 5:
+        results = PokerHandFunction.findPokerHand(hand)
+        print(results)
 
-    x1 = ["로얄 스트레이트 플러시", "스트레이트 플러시", "포카드", 
-          "풀 하우스", "플러시", "마운틴", "백 스트레이트", "스트레이트", 
-          "트리플", "투페어", "원페어"]
-    y1 = APokerHandFunction.madecalc(mycards,yourcards)
-
-    _, img_encoded = cv2.imencode('.jpg', source)
+    _, img_encoded = cv2.imencode('.jpg', img)
     image_data = base64.b64encode(img_encoded).decode('utf-8')
-    
+
+    x1 = ["투페어", "원페어", "3", "4", "5", "6", "7"]
+    y1 = [36.43, 22.55, 80, 50, 10, 20, 30]
+
     return render_template('main.html', x1=x1, y1=y1, image_data=image_data)
 
 if __name__ == '__main__':
