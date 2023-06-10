@@ -677,11 +677,11 @@ def madecalc(myHand, otherHand):
         FS_case_7 = 0
         FS_case_6 = 0
         
-        if(total_card >= need_cnt+2):
-            FS_case_7 = math.comb(total_card,7)
-        if(total_card >= need_cnt+1):
-            FS_case_6 = math.comb(total_card,6) * (deck_cnt-total_card)
-        FS_case_5 = math.comb(total_card,5) * math.comb(deck_cnt-total_card,2)
+        if(total_card >= need_cnt+2 and my_have_cnt >= 7 - turn):
+            FS_case_7 = math.comb(total_card,need_cnt+2)
+        if(total_card >= need_cnt+1 and my_have_cnt >= 6 - turn):
+            FS_case_6 = math.comb(total_card,need_cnt+1) * (deck_cnt-total_card)
+        FS_case_5 = math.comb(total_card,need_cnt) * math.comb(deck_cnt-total_card,turn-need_cnt)
         FS_case += FS_case_7 + FS_case_6 + FS_case_5
     
     FS_pr = round(FS_case / total_case * 100,4)
@@ -1045,6 +1045,12 @@ def madecalc(myHand, otherHand):
 if __name__ == "__main__":
 
     madecalc([],[])
+    madecalc(["AS"],[])
+    madecalc(["AS","2S"],[])
+    madecalc(["AS","2S","3S"],[])
+    madecalc(["AS","2S","3S","4S"],[])
+    madecalc(["AS","2S","3S","4S","6S"],[])
+    
 
     '''
     madecalc(["KH", "AH", "QH", "JH", "10H"],[])  # Royal Flush
