@@ -33,6 +33,11 @@
                 </td>
             </tr>
         </table>
+        <div>
+            <button class="btn"onclick="window.location.href='{{ url_for('start_analysis') }}'">
+                분석시작
+            </button>
+        </div>
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -44,34 +49,35 @@
   console.log("로그" + x1);
   console.log("로그@@" + y1);
 
-    // DOM이 로드된 후에 실행되도록 이벤트 리스너를 추가합니다.
+    // DOM이 로드된 후에 실행 이벤트 추가
     document.addEventListener('DOMContentLoaded', function() {
-        // Chart.js를 사용하여 막대 그래프 생성
+        // Chart.js를 사용하여 가로 막대 그래프 생성
         var ctx = document.getElementById('chart').getContext('2d');
         var chart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: x1,  // x 축 데이터
                 datasets: [{
-                    label: '그래프 확률',
+                    label: '족보 확률',
                     data: y1,  // y 축 데이터
-                    // backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],  // 막대 색상
                     backgroundColor: ['red', 'black', 'blue', 'green'],  // 막대 색상
                     borderWidth: 1
                 }]
             },
             options: {
+                indexAxis: 'y',  // Y축을 기준으로 막대 그래프를 표시
                 scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 100,  // X축 최대값 설정
+                    },
                     y: {
                         beginAtZero: true,
-                        max: 100,  // Y축 최대값 설정
-                        // ticks: {
-                        //     stepSize: 10  // Y축 보조 눈금 간격 설정
-                        // }
                     }
                 }
             }
         });
     });
+
 </script>
 </html>
