@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .headTitle {
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+        .btn{
+            height: 45px;
+            font-size: 16px;
+            border-radius: 10px;
+            color: white;
+            background-color: #272a2c;
+            font-weight: bold;
+            border-color: white;
+            width: 100%;
+            margin-top: 25px;
+        }
+        .cardImgMy {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-right: 20px;
+            flex-direction: column;
+        }
+        .cardImgYour {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-left: 20px;
+            flex-direction: column;
+        }
+        .chartWrap{
+            width: 80%;
+            margin: 0 auto;
+        }
+    </style>
+
+<head>
+    <title>분석결과</title>
+</head>
+<body>
+    <div class="headTitle">
+        보유한 카드의 족보
+    </div>
+    <div class="center">
+        <div id="mycards-container" class="cardImgMy">
+            <h3 style="margin: 30px 0 15px 0;">현재 보유한 카드</h3>
+            <img src="../static/images/mycard.jpg" class="cardImg">
+        </div>
+        <div id="yourcards-container" class="cardImgYour">
+            <h3 style="margin: 30px 0 15px 0;">상대방 카드</h3>
+            <img src="../static/images/yourcard.jpg" class="cardImg">
+        </div>
+    </div>
+    <div class="headTitle">확률정보</div>
+    <div id="chartContainer" class="chartWrap">
+        <canvas id="chart"></canvas>
+    </div>
+    <div style="height: 50px; width: 45%; margin: 0 auto;">
+        <button class="btn"onclick="window.location.href='{{ url_for('start_analysis') }}'">
+            다음분석
+        </button>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // x1과 y1 변수를 start_analysis 함수에서 리턴
+  var x1 = JSON.parse('{{ x1|tojson }}');
+  var y1 = JSON.parse('{{ y1|tojson }}');
+
+  console.log("로그 X1" + x1);
+  console.log("로그 Y1" + y1);
+
+    // DOM이 로드된 후에 실행 이벤트 추가
+    document.addEventListener('DOMContentLoaded', function() {
+        // Chart.js를 사용하여 가로 막대 그래프 생성
+        var ctx = document.getElementById('chart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: x1,  // x 축 데이터
+                datasets: [{
+                    label: '족보 확률',
+                    data: y1,  // y 축 데이터
+                    backgroundColor: ['rgb(255,102,0)', 'rgb(255,153,0)'
+                                    , 'rgb(255,204,0)', 'rgb(255,204,51)'
+                                    , 'rgb(153,204,0)', 'rgb(204,255,51)'
+                                    , 'rgb(204,255,0)', 'rgb(153,255,0)'
+                                    , 'rgb(102,255,0)', 'rgb(0,255,51)'
+                                    , 'rgb(51,204,0)'],  // 막대 색상
+                                    
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',  // Y축을 기준으로 막대 그래프를 표시
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 100,  // X축 최대값 설정
+                    },
+                    y: {
+                        beginAtZero: true,
+                    }
+                }
+            }
+        });
+    });
+
+</script>
+</html>

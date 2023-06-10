@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>기본 페이지</title>
+    <style>
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 30px;
+
+        }
+        .btn {
+            width: 45%;
+            height: 45px;
+            font-size: 16px;
+            border-radius: 10px;
+            color: white;
+            background-color: #272a2c;
+            font-weight: bold;
+            border-color: white;
+        }
+        .wrap {
+            margin-top: 5%;
+            display: flex;
+            justify-content: center;
+        }
+        .tbl {
+            background-image: url(static/images/main.jpg);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            border: 1px solid; 
+            border-radius: 10px; 
+            width: 400px; 
+            height: 450px;
+        }
+        .text_main {
+            color: white;
+            font-weight: bold;
+        }
+        .text_r {
+            padding-left: 55%;
+            color: white;
+            font-weight: bold;
+            text-align: left;
+        }
+        .text_l {
+            color: white;
+            font-weight: bold;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <table class="tbl">
+            <tr style="width: 50%; height: 10%;">
+                <th colspan="2">
+                    
+                </th>
+            </tr>
+            <tr>
+                <th style="width: 50%;" colspan="2">
+                    <h2 class="text_main">
+                        포커카드 족보 확률계산
+                    </h2>
+                </th>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="center">
+                        <button class="btn"onclick="window.location.href='{{ url_for('start_analysis') }}'">
+                            분석시작
+                        </button>
+                    </div>
+                </td>
+                
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center; font-size: 14px; color: white;">
+                    김현주, 노예리, 송태근, 엄태곤, 이덕형, 정유림
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+</body>
+</html>
