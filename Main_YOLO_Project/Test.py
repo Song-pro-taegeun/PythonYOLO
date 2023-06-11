@@ -130,8 +130,15 @@ def start_analysis():
         # y 값에 madecalc 함수에서 리턴한 값 반환(내카드랑 상대카드를 해당 함수에 넣는다.)
         y1 =PokerHandFunction.madecalc(mycards,yourcards)
 
+        # xy값에 x1값 y1값을 인덱스별로 합친다. ex-> x1 = aa, y1 = bb => xy = aabb
+        xy = []
+        for i in range(len(x1)):
+            xy.append(str(x1[i]) + "(" + str(y1[i]) + "%)")
+            print(xy)
+
         # main.html에 리턴한다. x1,y1값을 셋팅하여 리턴한다.
-        return render_template('main.html', x1=x1, y1=y1)
+        # xy에 x(족보) + y(확률) 확률값을 더하여 같이 리턴한다.
+        return render_template('main.html', x1=x1, y1=y1, xy = xy)
 
 
 if __name__ == '__main__':

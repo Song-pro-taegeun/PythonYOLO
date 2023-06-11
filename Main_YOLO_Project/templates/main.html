@@ -100,18 +100,21 @@
   // x1과 y1 변수를 start_analysis 함수에서 리턴
   var x1 = JSON.parse('{{ x1|tojson }}');
   var y1 = JSON.parse('{{ y1|tojson }}');
+  var xy = JSON.parse('{{ xy|tojson }}');
 
+  // 정확히 리턴값을 받아왔는지 체크
   console.log("로그 X1" + x1);
   console.log("로그 Y1" + y1);
+  console.log("로그 Y1" + xy);
 
     // DOM이 로드된 후에 실행 이벤트 추가
     document.addEventListener('DOMContentLoaded', function() {
         // Chart.js를 사용하여 가로 막대 그래프 생성
         var ctx = document.getElementById('chart').getContext('2d');
         var chart = new Chart(ctx, {
-            type: 'bar',
+            type: 'bar', // 막대 바
             data: {
-                labels: x1,  // x 축 데이터
+                labels: xy,  // x 축 데이터
                 datasets: [{
                     label: '족보 확률',
                     data: y1,  // y 축 데이터
