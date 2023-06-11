@@ -5,12 +5,25 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: #b6c7b6;
+            width: 60%;
+            margin: 0 auto;
+            padding: 50px;
+            border-radius: 20px;
+            border: 1px solid;
+        }
+        .mainTitle {
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+            padding: 15px 0 5px 0;
+            color: white;
+            text-shadow: 6px 2px 4px rgba(0, 0, 0, 1)
         }
         .headTitle {
             text-align: center;
             font-size: 25px;
             font-weight: bold;
-            margin-top: 30px;
         }
         .btn{
             height: 45px;
@@ -29,6 +42,7 @@
             align-items: center;
             padding-right: 20px;
             flex-direction: column;
+            border-radius: 10px;
         }
         .cardImgYour {
             display: flex;
@@ -36,10 +50,15 @@
             align-items: center;
             padding-left: 20px;
             flex-direction: column;
+            border-radius: 10px;
         }
         .chartWrap{
             width: 80%;
             margin: 0 auto;
+        }
+        .cardImg{
+            border-radius: 15px;
+            border-color: white
         }
     </style>
 
@@ -47,27 +66,33 @@
     <title>분석결과</title>
 </head>
 <body>
-    <div class="headTitle">
-        보유한 카드의 족보
-    </div>
-    <div class="center">
-        <div id="mycards-container" class="cardImgMy">
-            <h3 style="margin: 30px 0 15px 0;">현재 보유한 카드</h3>
-            <img src="../static/images/mycard.jpg" class="cardImg">
+    <div style="margin-top: 20px;">
+        <div style="background-color: #477148; width: 80%; height: 450px; margin: 0 auto; border-radius: 20px;">
+            <div class="mainTitle">
+                보유한 카드의 족보
+            </div>
+            <div class="center">
+                <div id="mycards-container" class="cardImgMy">
+                    <h3 style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 1); color : white">현재 보유한 카드</h3>
+                    <img src="../static/images/mycard.jpg" class="cardImg">
+                </div>
+                <div id="yourcards-container" class="cardImgYour">
+                    <h3 style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 1); color : white">상대방 카드</h3>
+                    <img src="../static/images/yourcard.jpg" class="cardImg">
+                </div>
+            </div>
         </div>
-        <div id="yourcards-container" class="cardImgYour">
-            <h3 style="margin: 30px 0 15px 0;">상대방 카드</h3>
-            <img src="../static/images/yourcard.jpg" class="cardImg">
+        <div style="margin-top: 15px;">
+            <div class="headTitle">확률정보</div>
+            <div id="chartContainer" class="chartWrap">
+                <canvas id="chart"></canvas>
+            </div>
+            <div style="height: 50px; width: 45%; margin: 0 auto;">
+                <button class="btn"onclick="window.location.href='{{ url_for('start_analysis') }}'">
+                    다음분석
+                </button>
+            </div>
         </div>
-    </div>
-    <div class="headTitle">확률정보</div>
-    <div id="chartContainer" class="chartWrap">
-        <canvas id="chart"></canvas>
-    </div>
-    <div style="height: 50px; width: 45%; margin: 0 auto;">
-        <button class="btn"onclick="window.location.href='{{ url_for('start_analysis') }}'">
-            다음분석
-        </button>
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

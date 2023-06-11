@@ -33,7 +33,7 @@ def start_analysis():
     # 위에서 전역 변수로 선언한 count를 글로벌 타입으로 설정
     global count 
     
-    if count == 6:
+    if count == 12:
         # 함수 종료
         return render_template('index.html', end = count)
         
