@@ -1,13 +1,9 @@
-from flask import Flask, render_template
-from ultralytics import YOLO
+# 필요 라이브러리 임포트
+from flask import Flask, render_template # 플라스크 라이브러리
+from ultralytics import YOLO # 욜로 라이브러리
 import cv2
-import cvzone
-import math
-
 import PokerHandFunction
-import numpy
 import os
-from flask import send_file
 
 app = Flask(__name__)
 
